@@ -1,8 +1,12 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson2.task1
 
+import java.lang.Math.*
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 
+fun sqr(x: Double) = x * x
 /**
  * Пример
  *
@@ -33,7 +37,18 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String =
+        when {
+            ((age % 10) == 1) && ((age % 100) != 11) -> ("$age год")
+            ((age % 100) == 11) -> ("$age лет")
+            ((age % 10 in 2..4)) && ((age % 100) !in 12..14) -> ("$age года")
+            (age % 100) in 12..14 -> ("$age лет")
+            ((age % 10) in 5..9) && ((age % 100) !in 15..19) -> ("$age лет")
+            ((age % 100) in 15..19) -> ("$age лет")
+            ((age % 10) == 0) -> ("$age лет")
+            else -> ("0")
+        }
+
 
 /**
  * Простая
@@ -42,9 +57,25 @@ fun ageDescription(age: Int): String = TODO()
  * и t3 часов — со скоростью v3 км/час.
  * Определить, за какое время он одолел первую половину пути?
  */
+/**решение
+ * 1)найти путь 1 2 3
+ * 2)найти весь путь поделить два
+ * 3)конструкция when -> L/2 В 1 , 2 и 3 промежутке в зависимости от этого просчитать
+ */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val way1 = (t1 * v1)
+    val way2 = (t2 * v2)
+    val way3 = (t3 * v3)
+    val way = (way1 + way2 + way3) / 2.0
+    return when {
+        (way in 0.0..way1) -> (way / v1);
+        (way in way1..way2 + way1) -> (t1 + ((way - way1) / v2))
+        (way in way2 + way1..way3 + way2 + way1) -> (t1 + t2 + (way - way2) / v3)
+        else -> (0.0)
+    }
+}
 
 /**
  * Простая
@@ -57,7 +88,14 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int =
+        when {
+            (kingX !== rookX1) && (kingY !== rookY1) && (kingX !== rookX2) && (kingY !== rookY1) -> 0
+            ((kingX == rookX1) || (kingY == rookY1)) && ((kingX !== rookX2) || (kingY !== rookY1)) -> 1
+            (kingX !== rookX1) && (kingY !== rookY1) && ((kingX == rookX2) || (kingY == rookY1)) -> 2
+            ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY1)) -> 3
+            else -> 7
+        }
 
 /**
  * Простая
@@ -71,7 +109,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int =
+        when {
+            (rookX == kingX) || (rookY == kingY) && (abs(bishopX - kingX) !== abs(bishopY - kingY)) -> 1
+            abs(bishopX - kingX) == abs(bishopY - kingY) && ((rookX !== kingX) && (rookY !== kingY)) -> 2
+            (rookX == kingX) || (rookY == kingY) && abs(bishopX - kingX) == abs(bishopY - kingY) -> 3
+            (rookX !== kingX) || (rookY !== kingY) && abs(bishopX - kingX) !== abs(bishopY - kingY) -> 0
+            else -> 7
+        }
 
 /**
  * Простая
@@ -81,7 +126,16 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    return when {
+        (a > (b + c)) || (b > (a + c)) || (c > (a + b)) -> (-1)
+        (sqr(c) == sqr(a) + sqr(b)) || (sqr(a) == (sqr(b) + sqr(c))) || (sqr(b) == (sqr(a) + sqr(c))) -> (1)
+        (sqr(c) > (sqr(a) + sqr(b))) || (sqr(a) > (sqr(b) + sqr(c))) || (sqr(b) > (sqr(a) + sqr(c))) -> (2)
+        (sqr(c) < sqr(a) + sqr(b)) || (sqr(a) < (sqr(b) + sqr(c))) || (sqr(b) < (sqr(a) + sqr(c))) -> (0)
+        else -> (9)
+    }
+}
+
 
 /**
  * Средняя
@@ -92,3 +146,5 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+
+
