@@ -115,7 +115,6 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
             abs(bishopX - kingX) == abs(bishopY - kingY) -> 2
             else -> 0
         }
-
 /**
  * Простая
  *
