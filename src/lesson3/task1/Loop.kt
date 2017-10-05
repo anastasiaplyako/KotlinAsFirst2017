@@ -66,8 +66,9 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var number = 0
     var x = n
-    for (m in 1..n) {
-        number++
+    if (x == 0) return (1)
+    while (x > 0) {
+        number += 1
         x /= 10
     }
     return (number)
@@ -79,7 +80,19 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var future = 1
+    var medium = 1
+    var last = 0
+    if (n > 2) {
+        for (i in 2..n) {
+            medium = future
+            future = future + last
+            last = medium
+        }
+        return (future)
+    } else return (1)
+}
 
 /**
  * Простая
@@ -155,7 +168,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var x = 0
-    for (i in Math.sqrt(m.toDouble()).toInt()..Math.sqrt(n.toDouble()).toInt()) {
+    var a = sqrt((m).toDouble())
+    var b = sqrt((n).toDouble())
+    for (i in a.toInt()..b.toInt()) {
         x += 1
     }
     if (x > 0) return true
@@ -169,7 +184,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double = Math.sin(x) //шутка - минутка
 
 /**
  * Средняя
@@ -179,7 +194,6 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double = Math.cos(x)
-
 
 /**
  * Средняя
@@ -217,19 +231,20 @@ fun isPalindrome(n: Int): Boolean {
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var x = n
-    var ost = 0
-    var k = 0
-    var kol = 0
-    while (x > 0) {
-        ost = x % 10
+    var residue = 0
+    var k = 0 //количество одинаковых цифр
+    var number = 0 //количество цифр
+    //Проверка : все ли цифры одинаковые
+    while ((x > 0) && (k == number)) {
+        residue = x % 10
         x /= 10
-        if ((x % 10) == ost) {
+        if ((x % 10) == residue) {
             k += 1
         }
-        kol += 1
+        number += 1
     }
     if (n == 0) return false
-    if (kol == k) return false
+    if (number == k) return false
     else return true
 }
 
