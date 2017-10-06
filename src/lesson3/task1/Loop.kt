@@ -259,7 +259,23 @@ fun hasDifferentDigits(n: Int): Boolean {
  *% 10
  */
 
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var str = 0
+    var number = 1
+    var length = 0
+    while (length < n) {
+        str = number * number
+        length += digitNumber(str)
+        number++
+    }
+    if (length > n) {
+        while (length != n) {
+            str /= 10
+            length--
+        }
+    }
+    return str % 10
+}
 
 /**
  * Сложная
