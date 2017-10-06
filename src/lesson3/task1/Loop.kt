@@ -81,17 +81,16 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var future = 1
-    var medium = 1
-    var last = 0
-    if (n > 2) {
-        for (i in 2..n) {
-            medium = future
-            future = future + last
-            last = medium
-        }
-        return (future)
-    } else return (1)
+    var b = 0
+    var c = 1
+    var a = 0
+    var i = 0
+    while (n > i){
+        a = c
+        c = b
+        b = a + b
+        i ++}
+    return(b)
 }
 
 /**
@@ -254,7 +253,12 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Найти n-ю цифру последовательности из квадратов целых чисел:
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
+ * решение =
+ * ревернуть число
+ * н - 6 while x/10
+ *% 10
  */
+
 fun squareSequenceDigit(n: Int): Int = TODO()
 
 /**
@@ -264,4 +268,20 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var str = 0
+    var number = 1
+    var length = 0
+    while (length < n) {
+        str = fib(number)
+        length += digitNumber(str)
+        number++
+    }
+    if (length > n) {
+        while (length != n) {
+            str /= 10
+            length--
+        }
+    }
+    return str % 10
+}
