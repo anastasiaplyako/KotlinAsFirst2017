@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
 
 /**
@@ -48,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -65,8 +64,10 @@ fun main(args: Array<String>) {
  * Перевести её в цифровой формат "15.07.2016".
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
+ * выделить из строки переменные
  */
 fun dateStrToDigit(str: String): String = TODO()
+
 
 /**
  * Средняя
@@ -75,7 +76,23 @@ fun dateStrToDigit(str: String): String = TODO()
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря")
+    val part = digital.split(".")
+    return try {
+        val date = part[0].toInt()
+        var monthx = (month[part[1].toInt() - 1])
+        val year = part[2].toInt()
+        if ((part.size == 3))
+            String.format("%d %s %d", date, monthx, year)
+        else ""
+    } catch (e: Exception) {
+        ""
+    }
+
+}
+
 
 /**
  * Средняя
@@ -90,7 +107,43 @@ fun dateDigitToStr(digital: String): String = TODO()
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String = TODO()
+/**{
+var list = mutableListOf<String>()
+var test = true
 
+try {
+
+//переносим строку в мутирующий список
+for (element in phone){
+list.add(element.toString())
+}
+
+// в мутирующем списке удаляем лишние знаки
+for (i in 0..list.size){
+list.remove(" ")
+list.remove("-")
+list.remove("(")
+list.remove(")")
+}
+
+//ловим ислючение
+for (element in list){
+if ((element.toInt() in 0..9) || (element == "+")){
+test = true
+}
+else  {test = false
+break}
+}
+when {
+test == true -> return list.joinToString(separator = "")
+test == false -> return ""
+}
+
+}
+catch(e: Exception)
+{return ("")}
+}
+ **/
 /**
  * Средняя
  *
