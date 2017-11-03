@@ -139,9 +139,11 @@ fun mean(list: List<Double>): Double {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): List<Double> =
-        list.map { it - list.sum() / (list.size) }
-//val mean = center.sum() / center.size
+fun center(list: MutableList<Double>): List<Double> {
+    val s = mean(list)
+    for (i in 0 until list.size) list[i] -= s
+    return list
+}
 
 
 /**
@@ -216,7 +218,7 @@ fun factorize(n: Int): List<Int> {
         if (x % i == 0) {
             multipliers.add(i)
             x = x / i
-            i = 2
+            i = 1
         }
         i++
     }
@@ -248,11 +250,16 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var x = n
     var number = mutableListOf<Int>()
-    while (x > 0) {
-        number.add(0, x % base)
-        x /= base
+    if (n == 0) {
+        number.add(0, x)
+        return number
+    } else {
+        while (x > 0) {
+            number.add(0, x % base)
+            x /= base
+        }
+        return number
     }
-    return number
 }
 
 /**
@@ -267,11 +274,15 @@ fun convertToString(n: Int, base: Int): String {
     var numberWord = mutableListOf<Char>()
     var x = n
     val str = ('0'..'9') + ('a'..'z')
-    while (x > 0) {
-        numberWord.add(0, str[x % base])
-        x /= base
+    if (n == 0) {
+        return 0.toString()
+    } else {
+        while (x > 0) {
+            numberWord.add(0, str[x % base])
+            x /= base
+        }
+        return (numberWord.joinToString(separator = ""))
     }
-    return (numberWord.joinToString(separator = ""))
 }
 
 /**
@@ -301,16 +312,12 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val numberWord = ('0'..'9') + ('a'..'z')
-    var res = mutableListOf<Char>()
-    var degree = 0.0
-    var n = str.toInt()
-    for (i in str.length downTo 0) {
-        res.add(numberWord[(n * pow(base.toDouble(), degree)).toInt()])
-        degree++
-        n /= 10
+    val numberWord = ('a'..'z')
+    var decimalx = mutableListOf<Int>()
+    for (i in 0..str.length - 1) {
+        decimalx.add(numberWord.indexOf(str[i]), 0)
     }
-    return res.joinToString(separator = "").toInt()
+    return decimal(decimalx, base)
 }
 
 /**

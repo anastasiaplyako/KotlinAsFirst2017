@@ -106,11 +106,10 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    val x = (rookX == kingX) || (rookY == kingY) && abs(bishopX - kingX) == abs(bishopY - kingY)
     val y = (rookX == kingX) || (rookY == kingY)
     val z = abs(bishopX - kingX) == abs(bishopY - kingY)
         return when {
-            (x && y) -> 3
+            (z && y) -> 3
             y -> 1
             z -> 2
             else -> 0
