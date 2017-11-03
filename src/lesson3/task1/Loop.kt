@@ -66,9 +66,10 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var number = 0
     var x = n
-    if (x == 0) return (1)
+    if (x == 0) return 1
+    if (x < 0) {x *= (-1)}
     while (x > 0) {
-        number += 1
+        number++
         x /= 10
     }
     return (number)
@@ -100,10 +101,10 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    val pr = (m * n)
+    val pr = m * n
     var a = m
     var b = n
-    while (a !== b) {
+    while (a != b) {
         if (a > b) a -= b
         else b -= a
     }
@@ -119,10 +120,10 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var x = 2
-    while (n % x !== 0) {
+    while (n % x != 0) {
         x += 1
     }
-    return (x)
+    return x
 }
 
 /**
@@ -130,17 +131,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var x = 0
-    var max = -1
-    while (n > x) {
-        x += 1
-        if (((n % x) == 0) && (x > max) && (n !== x)) {
-            max = x
-        }
-    }
-    return (max)
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -150,8 +141,8 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in (1..min(m, n))) {
-        if (((((m % i) == 0) && ((n % i) == 0))) && (i !== 1)) return false
+    for (i in (2..min(m, n))) {
+        if (m % i == 0 && n % i == 0 ) return false
         else continue
     }
     return true
@@ -165,7 +156,11 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    val k = (Math.sqrt(m.toDouble()) + 1).toInt()
+
+    return (k * k in m..n) || (m == n)
+}
 
 /**
  * Средняя
@@ -174,7 +169,22 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = Math.sin(x) //шутка - минутка
+fun sin(x: Double, eps: Double): Double {
+    var sinNew: Double
+    var plusOrMin = -1
+    var i = 1
+    var sin = 0.0
+    var xn = x % (2 * Math.PI)
+    do {
+        sinNew = pow(xn, i.toDouble()) / factorial(i)
+        plusOrMin *= (-1)
+        sin += plusOrMin * sinNew
+        i += 2
+    } while (abs(sinNew) > eps)
+    return sin
+}
+
+
 
 /**
  * Средняя
@@ -183,7 +193,20 @@ fun sin(x: Double, eps: Double): Double = Math.sin(x) //шутка - минут�
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = Math.cos(x)
+fun cos(x: Double, eps: Double): Double  {
+    var сosNew: Double
+    var plusOrMin = -1
+    var i = 0
+    var cos = 0.0
+    var xNew = x % (2 * Math.PI)
+    do {
+        сosNew = pow(xNew, i.toDouble()) / factorial(i)
+        plusOrMin *= (-1)
+        cos += plusOrMin * сosNew
+        i += 2
+    } while (abs(сosNew) > eps)
+    return cos
+}
 
 /**
  * Средняя
@@ -208,10 +231,9 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    if (revert(n) == n) return true
-    else return false
-}
+fun isPalindrome(n: Int): Boolean =
+    revert(n) == n
+
 
 /**
  * Средняя
@@ -220,22 +242,10 @@ fun isPalindrome(n: Int): Boolean {
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var x = n
-    var residue = 0
-    var k = 0 //количество одинаковых цифр
-    var number = 0 //количество цифр
-    //Проверка : все ли цифры одинаковые
-    while ((x > 0) && (k == number)) {
-        residue = x % 10
-        x /= 10
-        if ((x % 10) == residue) {
-            k += 1
-        }
-        number += 1
-    }
-    if (n == 0) return false
-    if (number == k) return false
-    else return true
+    var first = n / 10
+    val second = n % 10
+    while ((first % 10 == second ) && (first > 0)) first /= 10
+    return first != 0
 }
 
 /**
