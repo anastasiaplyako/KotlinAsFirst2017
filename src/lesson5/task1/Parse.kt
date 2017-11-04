@@ -108,7 +108,7 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String {
     var list = mutableListOf<String>()
-    var test = true
+
 
 //переносим строку в мутирующий список
     for (element in phone) {
