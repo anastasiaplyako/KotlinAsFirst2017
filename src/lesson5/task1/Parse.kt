@@ -106,44 +106,32 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
-/**{
-var list = mutableListOf<String>()
-var test = true
-
-try {
+fun flattenPhoneNumber(phone: String): String {
+    var list = mutableListOf<String>()
+    var test = true
 
 //переносим строку в мутирующий список
-for (element in phone){
-list.add(element.toString())
-}
+    for (element in phone) {
+        list.add(element.toString())
+    }
 
 // в мутирующем списке удаляем лишние знаки
-for (i in 0..list.size){
-list.remove(" ")
-list.remove("-")
-list.remove("(")
-list.remove(")")
+    for (i in 0 until list.size) {
+        list.remove(" ")
+        list.remove("-")
+        list.remove("(")
+        list.remove(")")
+    }
+
+    for (element in list) {
+        if ((element !in "0".."9") && (element != "+")) {
+            return ""
+        }
+    }
+    return list.joinToString(separator = "")
 }
 
-//ловим ислючение
-for (element in list){
-if ((element.toInt() in 0..9) || (element == "+")){
-test = true
-}
-else  {test = false
-break}
-}
-when {
-test == true -> return list.joinToString(separator = "")
-test == false -> return ""
-}
 
-}
-catch(e: Exception)
-{return ("")}
-}
- **/
 /**
  * Средняя
  *
