@@ -152,6 +152,7 @@ class Tests {
         assertEquals(listOf(2), factorize(2))
         assertEquals(listOf(3, 5, 5), factorize(75))
         assertEquals(listOf(2, 3, 3, 19), factorize(342))
+        assertEquals(listOf(2, 2, 2, 3, 3, 3, 3, 3, 251), factorize(487944))
     }
 
     @Test
@@ -183,6 +184,7 @@ class Tests {
         assertEquals("2ec", convertToString(1000, 19))
         assertEquals("z", convertToString(35, 36))
         assertEquals("a02220281", convertToString(Int.MAX_VALUE, 11))
+        assertEquals("0", convertToString(0, 17))
     }
 
     @Test
@@ -222,8 +224,12 @@ class Tests {
         assertEquals("двадцать две тысячи девятьсот шестьдесят четыре", russian(22964))
         assertEquals("сто девятнадцать тысяч пятьсот восемь", russian(119508))
         assertEquals("две тысячи три", russian(2003))
-        assertEquals("двести тысяч два", russian(200002))
         assertEquals("девятьсот тысяч", russian(900000))
         assertEquals("двенадцать", russian(12))
+        assertEquals("пятьсот десять тысяч триста двадцать пять", russian(510325))
+        assertEquals("пятьсот три тысячи триста двадцать пять", russian(503325))
+        assertEquals("четыреста тысяч тринадцать", russian(400013))
+        assertEquals("двести тысяч два", russian(200002))
+
     }
 }
