@@ -111,15 +111,13 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var a = 0.0
+    if (v.isEmpty()) return 0.0
     for (element in v) {
-        a = a + sqr(element)
+        a += sqr(element)
     }
-    return if (v.isNotEmpty() == true) {
-        Math.sqrt(a)
-    } else {
-        0.0
-    }
+    return Math.sqrt(a)
 }
+
 
 /**
  * Простая
@@ -194,13 +192,11 @@ fun polynom(p: List<Double>, x: Double): Double {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     var sum = 0.0
-    if (list.isNotEmpty()) {
-        for (i in 0 until list.size) {
-            sum += list[i]
-            list[i] = sum
-        }
+    for (i in 0 until list.size) {
+        sum += list[i]
+        list[i] = sum
     }
-    return (list)
+    return list
 }
 
 /**
@@ -214,7 +210,7 @@ fun factorize(n: Int): List<Int> {
     var x = n
     var i = 2
     val multipliers = mutableListOf<Int>()
-    while (i in (1..x)) {
+    while (i in 1..x) {
         if (x % i == 0) {
             multipliers.add(i)
             x = x / i
@@ -250,17 +246,13 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var x = n
     var number = mutableListOf<Int>()
-    if (n == 0) {
-        number.add(0, x)
-        return number
-    } else {
-        while (x > 0) {
-            number.add(0, x % base)
-            x /= base
-        }
-        return number
+    while (x > 0) {
+        number.add(0, x % base)
+        x /= base
     }
+    return number
 }
+
 
 /**
  * Сложная
@@ -312,10 +304,10 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val numberWord = ('a'..'z')
+    val numberWord = "0123456789abcdefghijklmnopqrstuvwxyz"
     var decimalx = mutableListOf<Int>()
-    for (i in 0..str.length - 1) {
-        decimalx.add(numberWord.indexOf(str[i]), 0)
+    for (element in str) {
+        decimalx.add(numberWord.indexOf(element, 0))
     }
     return decimal(decimalx, base)
 }
@@ -328,9 +320,8 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String {
-    val number = TODO()
-}
+fun roman(n: Int): String = TODO()
+
 
 /**
  * Очень сложная

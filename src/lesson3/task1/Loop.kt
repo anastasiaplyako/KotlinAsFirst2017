@@ -67,12 +67,11 @@ fun digitNumber(n: Int): Int {
     var number = 0
     var x = n
     if (x == 0) return 1
-    if (x < 0) {x *= (-1)}
-    while (x > 0) {
+    while (abs(x) > 0) {
         number++
         x /= 10
     }
-    return (number)
+    return number
 }
 
 /**
@@ -84,14 +83,14 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var b = 0
     var c = 1
-    var a = 0
     var i = 0
-    while (n > i){
-        a = c
+    while (n > i) {
+        val a = c
         c = b
-        b = a + b
-        i ++}
-    return(b)
+        b += a
+        i++
+    }
+    return b
 }
 
 /**
@@ -108,9 +107,7 @@ fun lcm(m: Int, n: Int): Int {
         if (a > b) a -= b
         else b -= a
     }
-    return (pr / a)
-
-
+    return pr / a
 }
 
 /**
@@ -119,11 +116,9 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var x = 2
-    while (n % x != 0) {
-        x += 1
-    }
-    return x
+    for (i in 2..Math.sqrt(n.toDouble()).toInt())
+        if (n % i == 0) return i
+    return n
 }
 
 /**
@@ -141,11 +136,11 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in (2..min(m, n))) {
-        if (m % i == 0 && n % i == 0 ) return false
-        else continue
+    val sq = min(m, n)
+    for (i in 2..Math.sqrt(sq.toDouble()).toInt()) {
+        if (m % i == 0 && n % i == 0) return false
     }
-    return true
+    return Math.max(m, n) % sq != 0
 }
 
 
@@ -158,7 +153,6 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     val k = (Math.sqrt(m.toDouble()) + 1).toInt()
-
     return (k * k in m..n) || (m == n)
 }
 
@@ -170,20 +164,18 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var sinNew: Double
     var plusOrMin = -1
     var i = 1
     var sin = 0.0
     var xn = x % (2 * Math.PI)
     do {
-        sinNew = pow(xn, i.toDouble()) / factorial(i)
+        val sinNew = pow(xn, i.toDouble()) / factorial(i)
         plusOrMin *= (-1)
         sin += plusOrMin * sinNew
         i += 2
     } while (abs(sinNew) > eps)
     return sin
 }
-
 
 
 /**
@@ -193,14 +185,13 @@ fun sin(x: Double, eps: Double): Double {
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double  {
-    var сosNew: Double
+fun cos(x: Double, eps: Double): Double {
     var plusOrMin = -1
     var i = 0
     var cos = 0.0
     var xNew = x % (2 * Math.PI)
     do {
-        сosNew = pow(xNew, i.toDouble()) / factorial(i)
+        val сosNew = pow(xNew, i.toDouble()) / factorial(i)
         plusOrMin *= (-1)
         cos += plusOrMin * сosNew
         i += 2
@@ -232,7 +223,7 @@ fun revert(n: Int): Int {
  * 15751 -- палиндром, 3653 -- нет.
  */
 fun isPalindrome(n: Int): Boolean =
-    revert(n) == n
+        revert(n) == n
 
 
 /**
@@ -244,7 +235,7 @@ fun isPalindrome(n: Int): Boolean =
 fun hasDifferentDigits(n: Int): Boolean {
     var first = n / 10
     val second = n % 10
-    while ((first % 10 == second ) && (first > 0)) first /= 10
+    while ((first % 10 == second) && (first > 0)) first /= 10
     return first != 0
 }
 
@@ -269,11 +260,9 @@ fun squareSequenceDigit(n: Int): Int {
         length += digitNumber(str)
         number++
     }
-    if (length > n) {
-        while (length != n) {
-            str /= 10
-            length--
-        }
+    while (length != n) {
+        str /= 10
+        length--
     }
     return str % 10
 }
@@ -294,11 +283,10 @@ fun fibSequenceDigit(n: Int): Int {
         length += digitNumber(str)
         number++
     }
-    if (length > n) {
-        while (length != n) {
-            str /= 10
-            length--
-        }
+    while (length != n) {
+        str /= 10
+        length--
+
     }
     return str % 10
 }

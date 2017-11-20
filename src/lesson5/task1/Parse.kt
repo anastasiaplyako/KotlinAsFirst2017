@@ -66,8 +66,15 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  * выделить из строки переменные
  */
-fun dateStrToDigit(str: String): String = TODO()
+val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
 
+fun dateStrToDigit(str: String): String {
+    val list = str.split(" ")
+    if (str.matches(Regex("""\d+\s[a-z]\s\d+""")) && (list[2].toInt() > 0)) {
+        return String.format("%02d.%02d.%s", list[0].toInt(), month.indexOf(list[1]) + 1, list[2])
+    }
+    return ""
+}
 
 /**
  * Средняя
@@ -107,22 +114,10 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    var list = mutableListOf<String>()
-
-
 //переносим строку в мутирующий список
-    for (element in phone) {
-        list.add(element.toString())
-    }
-
 // в мутирующем списке удаляем лишние знаки
-    for (i in 0 until list.size) {
-        list.remove(" ")
-        list.remove("-")
-        list.remove("(")
-        list.remove(")")
-    }
-
+    val symbols = listOf(" ", "-", "(", ")")
+    var list = phone.split(" ").filter { it !in symbols }
     for (element in list) {
         if ((element !in "0".."9") && (element != "+")) {
             return ""
@@ -142,7 +137,21 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val symbols = listOf("-", "%", " ")
+    var max = -1
+    return try {
+        val list = jumps.split(" ").filter { it !in symbols }
+        for (i in 0 until list.size) {
+            if (list[i].toInt() > max) {
+                max = list[i].toInt()
+            }
+        }
+        max
+    } catch (e: NumberFormatException) {
+        -1
+    }
+}
 
 /**
  * Сложная
@@ -154,7 +163,22 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var max = -1
+    try {
+        val list = jumps.split(" ")
+        for (i in 0 until list.size) {
+            if (list[i] == "+") {
+                if (list[i - 1].toInt() >= max) {
+                    max = list[i - 1].toInt()
+                }
+            }
+        }
+    } catch (e: NumberFormatException) {
+        -1
+    }
+    return max
+}
 
 /**
  * Сложная
@@ -165,7 +189,22 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val list = expression.split(" ")
+    var res = list[0].toInt()
+    try {
+        for (i in 1 until list.size step 2) {
+            when (list[i]) {
+                "+" -> res += list[i + 1].toInt()
+                "-" -> res -= list[i + 1].toInt()
+                else -> throw IllegalArgumentException()
+            }
+        }
+        return res
+    } catch (e: NumberFormatException) {
+        throw IllegalArgumentException()
+    }
+}
 
 /**
  * Сложная
@@ -176,7 +215,18 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+
+fun firstDuplicateIndex(str: String): Int {
+    val list = str.split(" ")
+    var res = 0
+    for (i in 1 until list.size - 1) {
+        if (list[i].equals(list[i - 1], true)) {
+            return res + i - 1
+        }
+        res += list[i - 1].length
+    }
+    return -1
+}
 
 /**
  * Сложная
@@ -189,7 +239,26 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    var max = -1.0
+    var i = 0
+    var k = 0 // индексирует числа
+    var kMax = 0  // находит индекс максимального числа
+    for (element in Regex("""\d+.\d+""").findAll(description)) {
+        k++
+        if (element.value.toDouble() > max) {
+            max = element.value.toDouble()
+            kMax = k
+        }
+    }
+    for (element in Regex("""[А-Яа-я]+""").findAll(description)) {
+        i++
+        if (i == kMax) {
+            return (element.value)
+        }
+    }
+    return ""
+}
 
 /**
  * Сложная
@@ -219,7 +288,7 @@ fun fromRoman(roman: String): Int = TODO()
  *  	не следующую по порядку, а идущую за соответствующей следующей командой ']' (с учётом вложенности);
  *	] - если значение под датчиком не равно 0, в качестве следующей команды следует воспринимать
  *  	не следующую по порядку, а идущую за соответствующей предыдущей командой '[' (с учётом вложенности);
- *      (комбинация [] имитирует цикл)
+ *      (комбинация [] имитирует цикл)+
  *  пробел - пустая команда
  *
  * Изначально все ячейки заполнены значением 0 и датчик стоит на ячейке с номером N/2 (округлять вниз)
@@ -240,4 +309,120 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+/**
+ * Алгоритм
+ * необходимо перебрать ячейки
+ * сells - размер листа
+ * commands - строка, в которой располагаются комнады
+ * limit - максмальное количество команд
+ * создадим мутирующий список размера cellsЮ добавим 0
+ * сделаем перебор в цикле For от строки
+ *    i - индекс для команд
+ *    k - индекс для листа с числами
+ *   list[i] - узнаем символ через when
+ *   1) сдвиг на 1 ячейку вправо
+ *     увеличить индекс k на единицу
+ *   2) cдвиг на 1 ячейку влево
+ *     уменьшить индекс k на единицу
+ *   3) увеличение значения в ячейке под датчиком на 1 ед.
+ *     увеличить значение list[i]++
+ *   4) уменьшение значения в ячейке под датчиком на 1 ед.
+ *     уменьшить значение list[i]--
+ *   5) [
+ *
+ *   6) ]
+ *
+ *   Обработка исключений
+ *   1) парные скобки
+ *   через цикл for перебрать всю строку с командами
+ *   2)прочие символы
+ *
+ */
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    var numberTeam = 0
+    var count = 0
+    val symbols = listOf('<', '>', '+', '-', '[', ']', ' ')
+    val list = commands.split("")
+    var cell = mutableListOf<Int>() // клетка
+    var k = cells / 2 // индекс текущей клетки
+    var i = 0 // индекс для комнады
+    //анализ строки
+    for (element in commands) {
+        if (element in symbols) {
+            //проверка на парность скобок
+            when (element) {
+                '[' -> count++
+                ']' -> count--
+            }
+        }
+        //бросаем исключение, если символ ошибочный
+        else {
+            throw IllegalArgumentException()
+        }
+    }
+    // бросаем исключение, если скобки не парные
+    if (count != 0) {
+        throw IllegalArgumentException()
+    }
+    //добавим нули
+    for (index in 0 until cells) {
+        cell.add(0, 0)
+    }
+    while (i != list.size) {
+        if (numberTeam <= limit) {
+            when (list[i]) {
+                ">" -> {
+                    k++
+                }
+                "<" -> {
+                    k--
+                }
+                "+" -> {
+                    cell[k]++
+                }
+                "-" -> {
+                    cell[k]--
+                }
+                "[" -> {
+                    //перебираем все скобки.Данное условие необходимо, когда в строке встречается больше одной пары скобок
+                    //для первой открывающейся скобки парой служит последняя открывающая и т. д.
+                    var test = 0
+                    if (cell[k] == 0) {
+                        for (index in i until list.size) {
+                            when (list[index]) {
+                                "]" -> test++
+                                "[" -> test--
+                            }
+                            if (test == 0) {
+                                i = index
+                                break
+                            }
+                        }
+                    }
+                }
+                "]" -> {
+                    if (cell[k] != 0) {
+                        var test = 0
+                        for (index in i downTo 0) {
+                            when (list[index]) {
+                                "]" -> test++
+                                "[" -> test--
+                            }
+                            if (test == 0) {
+                                i = index
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+            i++
+            numberTeam++
+        } else {
+            break
+        }
+    }
+    return cell
+}
+
+
