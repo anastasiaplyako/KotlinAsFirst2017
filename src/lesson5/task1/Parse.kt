@@ -86,6 +86,7 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
             "августа", "сентября", "октября", "ноября", "декабря")
+    if ((!digital.matches(Regex("""\d\d.\d\d.\d+""")))) return ""
     val part = digital.split(".")
     return try {
         val date = part[0].toInt()
@@ -114,12 +115,10 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-//переносим строку в мутирующий список
-// в мутирующем списке удаляем лишние знаки
     val symbols = listOf(" ", "-", "(", ")")
-    var list = phone.split(" ").filter { it !in symbols }
+    var list = phone.split("").filter { it !in symbols }
     for (element in list) {
-        if ((element !in "0".."9") && (element != "+")) {
+        if ((element in "0".."9") || (element == "+")) {
             return ""
         }
     }
@@ -138,19 +137,19 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    val symbols = listOf("-", "%", " ")
+    val symbols = listOf("-", "%", "")
     var max = -1
-    return try {
-        val list = jumps.split(" ").filter { it !in symbols }
-        for (i in 0 until list.size) {
-            if (list[i].toInt() > max) {
-                max = list[i].toInt()
+    val list = jumps.split(" ").filter { it !in symbols }
+    try {
+        for (i in list) {
+            if (i.toInt() >= max) {
+                max = i.toInt()
             }
         }
-        max
     } catch (e: NumberFormatException) {
-        -1
+        return -1
     }
+    return max
 }
 
 /**
@@ -164,18 +163,15 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    var max = -1
-    try {
-        val list = jumps.split(" ")
-        for (i in 0 until list.size) {
-            if (list[i] == "+") {
-                if (list[i - 1].toInt() >= max) {
-                    max = list[i - 1].toInt()
-                }
-            }
+    var max = 0
+    if (jumps.contains(Regex("""[^\d %+-]""")) || '+' !in jumps) return -1
+    var jump = Regex("""\d+ [%-]+ """).replace(jumps + " ", "")
+    jump = Regex(""" [^\d]+ *""").replace(jump + " ", " ")
+    val list = jump.split(" ")
+    for (element in list) {
+        if (element != "" && element.toInt() >= max) {
+            max = element.toInt()
         }
-    } catch (e: NumberFormatException) {
-        -1
     }
     return max
 }
@@ -190,6 +186,8 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
+    if (!expression.matches(Regex("""(\d+ [+-] )*(\d+)""")))
+        throw IllegalArgumentException()
     val list = expression.split(" ")
     var res = list[0].toInt()
     try {
@@ -219,6 +217,7 @@ fun plusMinus(expression: String): Int {
 fun firstDuplicateIndex(str: String): Int {
     val list = str.split(" ")
     var res = 0
+    if (list.size == 1) return -1
     for (i in 1 until list.size - 1) {
         if (list[i].equals(list[i - 1], true)) {
             return res + i - 1
@@ -240,6 +239,8 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
+    if (!description.matches(Regex("""(.* \d+(\.\d+)?; )*(.* \d+(\.\d+)?)""")))
+        return ""
     var max = -1.0
     var i = 0
     var k = 0 // индексирует числа
