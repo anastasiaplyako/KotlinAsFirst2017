@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import lesson3.task1.minDivisor
 import java.lang.Math.*
 
 /**
@@ -126,7 +127,7 @@ fun abs(v: List<Double>): Double {
  */
 fun mean(list: List<Double>): Double {
     return if (list.isEmpty()) 0.0
-    else return (list.sum() / list.size)
+    else list.sum() / list.size
 }
 
 /**
@@ -208,17 +209,13 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  */
 fun factorize(n: Int): List<Int> {
     var x = n
-    var i = 2
-    val multipliers = mutableListOf<Int>()
-    while (i in 1..x) {
-        if (x % i == 0) {
-            multipliers.add(i)
-            x = x / i
-            i = 1
-        }
-        i++
+    val list = mutableListOf<Int>()
+    while (x != 1) {
+        val tmp = minDivisor(x)
+        x /= tmp
+        list.add(tmp)
     }
-    return multipliers.sorted()
+    return list
 }
 
 /**
@@ -267,14 +264,13 @@ fun convertToString(n: Int, base: Int): String {
     var x = n
     val str = ('0'..'9') + ('a'..'z')
     if (n == 0) {
-        return 0.toString()
-    } else {
-        while (x > 0) {
-            numberWord.add(0, str[x % base])
-            x /= base
-        }
-        return (numberWord.joinToString(separator = ""))
+        return "0"
     }
+    while (x > 0) {
+        numberWord.add(0, str[x % base])
+        x /= base
+    }
+    return numberWord.joinToString(separator = "")
 }
 
 /**
@@ -304,10 +300,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val numberWord = "0123456789abcdefghijklmnopqrstuvwxyz"
+    //val numberWord = "0123456789abcdefghijklmnopqrstuvwxyz"
+    val numberWord = ('0'..'9') + ('a'..'z')
     var decimalx = mutableListOf<Int>()
     for (element in str) {
-        decimalx.add(numberWord.indexOf(element, 0))
+        decimalx.add(numberWord.indexOf(element))
     }
     return decimal(decimalx, base)
 }
@@ -331,10 +328,14 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val ed = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    val ed1 = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    val doz = listOf("", "десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-    val hun = listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    val unit = listOf("", "один", "два", "три", "четыре", "пять", "шесть",
+            "семь", "восемь", "девять")
+    val unitDoz = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    val doz = listOf("", "десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят",
+            "семьдесят", "восемьдесят", "девяносто")
+    val hun = listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот",
+            "семьсот", "восемьсот", "девятьсот")
     var x = n
     var i = 0
     val res = mutableListOf<String>()
@@ -342,26 +343,26 @@ fun russian(n: Int): String {
         i++
         when (i) {
             1 -> if (x % 100 !in 10..19) {
-                res.add(0, ed[x % 10])
+                res.add(0, unit[x % 10])
                 x /= 10
                 res.add(0, doz[x % 10])
             } else {
-                res.add(0, ed1[x % 10])
+                res.add(0, unitDoz[x % 10])
                 x /= 10
             }
             2 -> res.add(0, hun[x % 10])
             3 -> if (x % 100 !in 10..19) {
                 when {
-                    x % 10 == 0 -> res.add(0, ed[x % 10] + "тысяч")
+                    x % 10 == 0 -> res.add(0, unit[x % 10] + "тысяч")
                     x % 10 == 1 -> res.add(0, "одна тысяча")
                     x % 10 == 2 -> res.add(0, "две тысячи")
-                    x % 10 in 3..4 -> res.add(0, ed[x % 10] + " тысячи")
-                    x % 10 in 5..9 -> res.add(0, ed[x % 10] + " тысяч")
+                    x % 10 in 3..4 -> res.add(0, unit[x % 10] + " тысячи")
+                    x % 10 in 5..9 -> res.add(0, unit[x % 10] + " тысяч")
                 }
                 x /= 10
                 res.add(0, doz[x % 10])
             } else {
-                res.add(0, ed1[x % 10] + " " + "тысяч")
+                res.add(0, unitDoz[x % 10] + " " + "тысяч")
                 x /= 10
             }
             4 -> res.add(0, hun[x % 10])

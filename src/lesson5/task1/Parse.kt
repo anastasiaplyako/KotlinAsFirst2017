@@ -66,7 +66,8 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  * выделить из строки переменные
  */
-val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+val month = listOf("января", "февраля", "марта", "апреля", "мая",
+        "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
 
 fun dateStrToDigit(str: String): String {
     val list = str.split(" ")
@@ -114,16 +115,7 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String {
-    val symbols = listOf(" ", "-", "(", ")")
-    var list = phone.split("").filter { it !in symbols }
-    for (element in list) {
-        if ((element in "0".."9") || (element == "+")) {
-            return ""
-        }
-    }
-    return list.joinToString(separator = "")
-}
+fun flattenPhoneNumber(phone: String): String = TODO()
 
 
 /**
@@ -142,8 +134,9 @@ fun bestLongJump(jumps: String): Int {
     val list = jumps.split(" ").filter { it !in symbols }
     try {
         for (i in list) {
-            if (i.toInt() >= max) {
-                max = i.toInt()
+            val tmp = i.toInt()
+            if (tmp >= max) {
+                max = tmp
             }
         }
     } catch (e: NumberFormatException) {
@@ -373,10 +366,14 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         if (numberTeam <= limit) {
             when (list[i]) {
                 ">" -> {
-                    k++
+                    if (i >= cells)
+                        k++
+                    else throw IllegalArgumentException()
                 }
                 "<" -> {
-                    k--
+                    if (i >= cells)
+                        k--
+                    else throw IllegalArgumentException()
                 }
                 "+" -> {
                     cell[k]++
