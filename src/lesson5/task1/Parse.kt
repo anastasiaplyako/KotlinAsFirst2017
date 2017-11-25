@@ -312,14 +312,14 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             }
         }
         //бросаем исключение, если символ ошибочный
-        else {
-            throw IllegalArgumentException()
-        }
+        else throw IllegalArgumentException()
+
     }
     // бросаем исключение, если скобки не парные
     if (count != 0) {
         throw IllegalArgumentException()
     }
+    if (count < 0) throw IllegalArgumentException()
     //добавим нули
     for (index in 0 until cells) {
         cell.add(0, 0)
