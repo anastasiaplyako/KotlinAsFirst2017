@@ -130,6 +130,7 @@ class Line private constructor(val b: Double, val angle: Double) {
     init {
         assert(angle >= 0 && angle < Math.PI) { "Incorrect line angle: $angle" }
     }
+
     constructor(point: Point, angle: Double) : this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
 
     /**
@@ -138,7 +139,11 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Найти точку пересечения с другой линией.
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
-    fun crossPoint(other: Line): Point = TODO()
+    fun crossPoint(other: Line): Point {
+        val x = (other.b * Math.cos(angle) - b * Math.cos(other.angle)) / Math.sin(angle - other.angle)
+        val y = (b * Math.sin(other.angle) - other.b * Math.sin(angle)) / Math.sin(other.angle - angle)
+        return Point(x, y)
+    }
 
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
@@ -190,11 +195,17 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  *
  * Дано три различные точки. Построить окружность, проходящую через них
  * (все три точки должны лежать НА, а не ВНУТРИ, окружности).
- * Описание алгоритмов см. в Интернете
+ * Описание алгоритмов см. в Интернете1qw
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val lineFirst = bisectorByPoints(a, b)
+    val lineSecond = bisectorByPoints(c, b)
+    val center = lineFirst.crossPoint(lineSecond)
+    val radius = a.distance(center)
+    return Circle(center, radius)
+}
 
 /**
  * Очень сложная
@@ -208,4 +219,5 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
  * соединяющий две самые удалённые точки в данном множестве.
  */
 fun minContainingCircle(vararg points: Point): Circle = TODO()
+
 
