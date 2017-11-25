@@ -131,7 +131,6 @@ class Line private constructor(val b: Double, val angle: Double) {
     init {
         assert(angle >= 0 && angle < Math.PI) { "Incorrect line angle: $angle" }
     }
-
     constructor(point: Point, angle: Double) : this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
 
     /**
