@@ -69,13 +69,7 @@ fun main(args: Array<String>) {
 val month = listOf("января", "февраля", "марта", "апреля", "мая",
         "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
 
-fun dateStrToDigit(str: String): String {
-    val list = str.split(" ")
-    if (str.matches(Regex("""\d+\s[a-z]\s\d+""")) && (list[2].toInt() > 0)) {
-        return String.format("%02d.%02d.%s", list[0].toInt(), month.indexOf(list[1]) + 1, list[2])
-    }
-    return ""
-}
+fun dateStrToDigit(str: String): String = TODO()
 
 /**
  * Средняя
@@ -207,18 +201,7 @@ fun plusMinus(expression: String): Int {
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 
-fun firstDuplicateIndex(str: String): Int {
-    val list = str.split(" ")
-    var res = 0
-    if (list.size == 1) return -1
-    for (i in 1 until list.size - 1) {
-        if (list[i].equals(list[i - 1], true)) {
-            return res + i - 1
-        }
-        res += list[i - 1].length
-    }
-    return -1
-}
+fun firstDuplicateIndex(str: String): Int = TODO()
 
 /**
  * Сложная
@@ -231,28 +214,7 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String {
-    if (!description.matches(Regex("""(.* \d+(\.\d+)?; )*(.* \d+(\.\d+)?)""")))
-        return ""
-    var max = -1.0
-    var i = 0
-    var k = 0 // индексирует числа
-    var kMax = 0  // находит индекс максимального числа
-    for (element in Regex("""\d+.\d+""").findAll(description)) {
-        k++
-        if (element.value.toDouble() > max) {
-            max = element.value.toDouble()
-            kMax = k
-        }
-    }
-    for (element in Regex("""[А-Яа-я]+""").findAll(description)) {
-        i++
-        if (i == kMax) {
-            return (element.value)
-        }
-    }
-    return ""
-}
+fun mostExpensive(description: String): String = TODO()
 
 /**
  * Сложная
@@ -366,12 +328,12 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         if (numberTeam <= limit) {
             when (list[i]) {
                 ">" -> {
-                    if (i >= cells)
+                    if (k + 1 < cells)
                         k++
                     else throw IllegalArgumentException()
                 }
                 "<" -> {
-                    if (i >= cells)
+                    if (k - 1 >= 0)
                         k--
                     else throw IllegalArgumentException()
                 }
