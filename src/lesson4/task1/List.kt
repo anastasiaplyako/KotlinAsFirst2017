@@ -240,15 +240,7 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * берём остаток
  * иначе берем не остаток
  */
-fun convert(n: Int, base: Int): List<Int> {
-    var x = n
-    var number = mutableListOf<Int>()
-    while (x > 0) {
-        number.add(0, x % base)
-        x /= base
-    }
-    return number
-}
+fun convert(n: Int, base: Int): List<Int> = TODO()
 
 
 /**

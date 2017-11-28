@@ -83,6 +83,8 @@ fun dateDigitToStr(digital: String): String {
             "августа", "сентября", "октября", "ноября", "декабря")
     if ((!digital.matches(Regex("""\d\d.\d\d.\d+""")))) return ""
     val part = digital.split(".")
+    print(part)
+    if ((part.size != 3)||(part[1].toInt() <= 0)) return ""
     return try {
         val date = part[0].toInt()
         var monthx = (month[part[1].toInt() - 1])
@@ -90,7 +92,7 @@ fun dateDigitToStr(digital: String): String {
         if ((part.size == 3))
             String.format("%d %s %d", date, monthx, year)
         else ""
-    } catch (e: Exception) {
+    } catch (e: NumberFormatException) {
         ""
     }
 
