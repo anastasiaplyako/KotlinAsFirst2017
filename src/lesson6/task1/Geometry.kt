@@ -189,8 +189,16 @@ fun bisectorByPoints(a: Point, b: Point): Line {
  * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
  * Если в списке менее двух окружностей, бросить IllegalArgumentException
  */
-fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
-
+fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
+    val list = circles.toList()
+    var min = 0.0
+    if (list.size < 2) throw IllegalArgumentException(
+    for (i in 0 until list.size){
+     for (j in 1 until list.size - 1)   {
+         if (list[i].center.distance(list[j].center) <= min){
+             list[i].center.distance(list[j].center) = }
+}
+}
 /**
  * Сложная
  *
