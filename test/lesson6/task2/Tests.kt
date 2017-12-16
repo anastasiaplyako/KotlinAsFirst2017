@@ -42,6 +42,7 @@ class Tests {
     @Tag("Easy")
     fun rookMoveNumber() {
         assertEquals(0, rookMoveNumber(square("e3"), square("e3")))
+        assertEquals(0, rookMoveNumber(square("e3"), square("e3")))
         assertEquals(2, rookMoveNumber(square("c2"), square("b1")))
         assertEquals(2, rookMoveNumber(square("g8"), square("f6")))
         assertEquals(1, rookMoveNumber(square("a8"), square("g8")))
@@ -130,6 +131,14 @@ class Tests {
         kingTrajectory(square("c2"), square("a6")).assertKingTrajectory(square("c2"), square("a6"), 4)
         assertEquals(listOf(square("h2"), square("g3"), square("f4"), square("e5"), square("d6"), square("c7")),
                 kingTrajectory(square("h2"), square("c7")))
+        assertEquals(listOf(square("h1"),square("g2"),square("f3"),square("e4"),square("d5"),square("c6"),square("b7"),square("a7")),
+        kingTrajectory(square("h1"),square("a7")))
+        assertEquals(listOf(square("a1"),square("a2"),square("a3")),
+                kingTrajectory(square("a1"),square("a3")))
+        assertEquals(listOf(square("h5"),square("g4"),square("f3"),square("e3"),square("d3"),square("c3"),square("b3"),square("a3")),
+                kingTrajectory(square("h5"),square("a3")))
+        assertEquals(listOf(square("a3"),square("b4"),square("c5"),square("d5"),square("e5"),square("f5"),square("g5"),square("h5")),
+                kingTrajectory(square("a3"),square("h5")))
     }
 
     @Test

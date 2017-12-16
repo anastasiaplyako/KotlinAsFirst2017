@@ -267,7 +267,7 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
             if (list.last().row != end.row)
                 for (i in 1..Math.abs(list.last().row - end.row))
                     list.add(Square(end.column, list.last().row + 1))
-            else for (i in 1..list.last().column - end.column) {
+            else for (i in 1..Math.abs(list.last().column - end.column)) {
                 if (list.last().column - end.column > 0)
                     list.add(Square(list.last().column - 1, end.row))
                 else list.add(Square(list.last().column + 1, end.row))
