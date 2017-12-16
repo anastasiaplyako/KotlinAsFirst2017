@@ -223,14 +223,16 @@ fun kingMoveNumber(start: Square, end: Square): Int {
  */
 fun kingTrajectory(start: Square, end: Square): List<Square> {
     val list = mutableListOf(start)
+    if (end == start) return list
     when {
         start.row == end.row -> {
-            for (i in start.column + 1 until end.column) {
+            for (i in 1..Math.abs(start.column - end.column)) {
                 list.add(Square(start.column + i, start.row))
+                print(Square(start.column + i, start.row))
             }
         }
         start.column == end.column -> {
-            for (i in start.row + 1 until end.row) {
+            for (i in 1..Math.abs(start.row - end.row)) {
                 list.add(Square(start.column, start.row + i))
             }
         }
