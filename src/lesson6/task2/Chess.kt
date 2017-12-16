@@ -69,10 +69,8 @@ fun square(notation: String): Square {
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
     var n = 0
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
     if (start == end) return 0
-    if (!start.inside() || !end.inside()) {
-        throw IllegalArgumentException()
-    }
     if (Math.abs(start.row - end.row) != 0) {
         n++
     }
@@ -129,6 +127,7 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
 fun bishopMoveNumber(start: Square, end: Square): Int {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
     return when {
         start == end -> return 0
         start.column - start.row == end.column - end.row || start.column + start.row == end.column + end.row -> 1
@@ -156,6 +155,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun bishopTrajectory(start: Square, end: Square): List<Square> {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
     val list = mutableListOf(start)
     val tmp = (Math.abs(end.column - start.column) + Math.abs(end.row - start.row)) / 2
     return when (bishopMoveNumber(start, end)) {
@@ -197,13 +197,14 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
 fun kingMoveNumber(start: Square, end: Square): Int {
     if (!start.inside() || (!end.inside())) throw IllegalArgumentException()
     if (start == end) return 0
-    var n = 0
-    when {
-        start.column == end.column -> n = Math.abs(start.row - end.row)
-        start.row == end.row -> n = Math.abs(start.column - end.column)
-        else -> n = Math.abs(start.row - end.row)
+    val coorX = Math.abs(start.column - end.column)
+    val coorY = Math.abs(start.row - end.row)
+    return when {
+        start.column == end.column -> coorY
+        start.row == end.row -> coorX
+        else -> if (coorX > coorY) coorX
+        else coorY
     }
-    return n
 }
 
 /**
@@ -235,7 +236,8 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
         }
         else -> {
             var x = 0
-            while (x != Math.abs(start.column - end.column)) {
+            val count = Math.min(Math.abs(start.column - end.column), Math.abs(start.row - end.row))
+            while (x != count) {
                 x++
                 when {
                     (end.column - start.column > 0) && (end.row - start.row > 0) -> {
@@ -260,12 +262,13 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
                     }
                 }
             }
-            if ((list.last().row != 1) && (list.last().row != 8))
-                for (i in 1..Math.abs(list.last().row - end.row)) {
+            if (list.last().row != end.row)
+                for (i in 1..Math.abs(list.last().row - end.row))
                     list.add(Square(end.column, list.last().row + 1))
-                }
-            else for (i in list.last().column until end.column) { // изменить как в 1
-                list.add(Square(list.last().column + i, end.row))
+            else for (i in 1..list.last().column - end.column) {
+                if (list.last().column - end.column > 0)
+                    list.add(Square(list.last().column - 1, end.row))
+                else list.add(Square(list.last().column + 1, end.row))
             }
         }
 
