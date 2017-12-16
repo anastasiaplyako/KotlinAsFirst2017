@@ -22,20 +22,20 @@ class Tests {
     @Test
     @Tag("Easy")
     fun notation() {
-        assertEquals("", Square(1, 0).notation())
         assertEquals("b3", Square(2, 3).notation())
         assertEquals("g6", Square(7, 6).notation())
         assertEquals("a8", Square(1, 8).notation())
         assertEquals("h1", Square(8, 1).notation())
+        assertEquals("", Square(1, 0).notation())
     }
 
     @Test
     @Tag("Easy")
     fun square() {
-        assertEquals(Square(3, 2), square("c2"))
         assertEquals(Square(5, 5), square("e5"))
         assertEquals(Square(6, 8), square("f8"))
         assertEquals(Square(4, 1), square("d1"))
+        assertEquals(Square(3, 2), square("c2"))
     }
 
     @Test
@@ -75,6 +75,7 @@ class Tests {
         assertEquals(0, bishopMoveNumber(square("d4"), square("d4")))
         assertEquals(1, bishopMoveNumber(square("a3"), square("e7")))
         assertEquals(2, bishopMoveNumber(square("c1"), square("c7")))
+        assertEquals(1,bishopMoveNumber(square("f4"), square("b8")))
     }
 
     private fun List<Square>.assertBishopTrajectory(start: Square, end: Square, length: Int) {

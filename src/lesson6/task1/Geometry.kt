@@ -107,7 +107,19 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    val list = points.toList()
+    if (list.size < 2) throw IllegalArgumentException()
+    var result = Segment(list[0], list[1])
+    for (point in list) {
+        for (i in 0 until list.size) {
+            if (point.distance(list[i]) > result.begin.distance(result.end))
+                result = Segment(point, list[i])
+        }
+    }
+    return (result)
+}
+
 
 /**
  * Простая
@@ -140,7 +152,6 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
     fun crossPoint(other: Line): Point {
-        if (angle == other.angle) return Point(' '.toDouble(), ' '.toDouble())
         val x = (other.b * Math.cos(angle) - b * Math.cos(other.angle)) / Math.sin(angle - other.angle)
         val y = (b * Math.sin(other.angle) - other.b * Math.sin(angle)) / Math.sin(other.angle - angle)
         return Point(x, y)
@@ -163,7 +174,7 @@ class Line private constructor(val b: Double, val angle: Double) {
  * Построить прямую по отрезку
  */
 fun lineBySegment(s: Segment): Line =
-        Line(s.begin, Math.atan2((s.end.y - s.begin.y),(s.end.x - s.begin.x)) % Math.PI)
+        Line(s.begin, Math.atan2((s.end.y - s.begin.y), (s.end.x - s.begin.x)) % Math.PI)
 
 /**
  * Средняя
@@ -180,7 +191,7 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 fun bisectorByPoints(a: Point, b: Point): Line {
     val x = (a.x + b.x) / 2
     val y = (a.y + b.y) / 2
-    val ang = Math.PI / 2 + Math.atan2((b.y - a.y),(b.x - a.x))
+    val ang = Math.PI / 2 + Math.atan2((b.y - a.y), (b.x - a.x))
     return Line(Point(x, y), ang)
 }
 
@@ -191,14 +202,22 @@ fun bisectorByPoints(a: Point, b: Point): Line {
  */
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     val list = circles.toList()
-    var min = 0.0
-    if (list.size < 2) throw IllegalArgumentException(
-    for (i in 0 until list.size){
-     for (j in 1 until list.size - 1)   {
-         if (list[i].center.distance(list[j].center) <= min){
-             list[i].center.distance(list[j].center) = }
+    var res1 = Pair(list[0], list[1])
+    if (list.size < 2) {
+        throw IllegalArgumentException()
+    }
+    var res = list[0].distance(list[1])
+    for (circl in list) {
+        for (i in list.indexOf(circl) + 1 until list.size) {
+            if (list[i].distance(circl) < res) {
+                res = list[i].distance(circl)
+                res1 = Pair(circl, list[i])
+            }
+        }
+    }
+    return res1
 }
-}
+
 /**
  * Сложная
  *
