@@ -139,6 +139,10 @@ class Tests {
                 kingTrajectory(square("h5"),square("a3")))
         assertEquals(listOf(square("a3"),square("b4"),square("c5"),square("d5"),square("e5"),square("f5"),square("g5"),square("h5")),
                 kingTrajectory(square("a3"),square("h5")))
+        assertEquals(listOf(square("c8"),square("b7"),square("a6"),square("a5"),square("a4"),square("a3"),square("a2"),square("a1")),
+                kingTrajectory(square("c8"),square("a1")))
+        assertEquals(listOf(square("a6"),square("a5"),square("a4"),square("a3"),square("a2"),square("a1")),
+                kingTrajectory(square("a6"),square("a1")))
     }
 
     @Test

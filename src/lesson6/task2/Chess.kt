@@ -227,13 +227,16 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
     when {
         start.row == end.row -> {
             for (i in 1..Math.abs(start.column - end.column)) {
-                list.add(Square(start.column + i, start.row))
-                print(Square(start.column + i, start.row))
+                if (end.column - start.column > 0)
+                    list.add(Square(start.column + i, start.row))
+                else list.add(Square(start.column - i, start.row))
             }
         }
         start.column == end.column -> {
             for (i in 1..Math.abs(start.row - end.row)) {
-                list.add(Square(start.column, start.row + i))
+                if (end.row - start.row > 0)
+                    list.add(Square(start.column, start.row + i))
+                else list.add(Square(start.column, start.row - i))
             }
         }
         else -> {
@@ -267,8 +270,8 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
             if (list.last().row != end.row)
                 for (i in 1..Math.abs(list.last().row - end.row))
                     if (list.last().row - end.row > 0)
-                    list.add(Square(end.column, list.last().row - 1))
-                     else  list.add(Square(end.column, list.last().row + 1))
+                        list.add(Square(end.column, list.last().row - 1))
+                    else list.add(Square(end.column, list.last().row + 1))
             else for (i in 1..Math.abs(list.last().column - end.column)) {
                 if (list.last().column - end.column > 0)
                     list.add(Square(list.last().column - 1, end.row))
