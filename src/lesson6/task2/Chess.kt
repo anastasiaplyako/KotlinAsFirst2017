@@ -270,7 +270,6 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
         }
 
     }
-    print(list)
     return list
 }
 
