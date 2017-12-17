@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson7.task2
 
 import lesson7.task1.Matrix
@@ -59,7 +60,34 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  * 10 11 12  5
  *  9  8  7  6
  */
-fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSpiral(height: Int, width: Int): Matrix<Int> {
+    val res = createMatrix(height, width, height * width)
+    var count = 1
+    var imax = height
+    var jmax = width
+    var jmin = 0
+    var imin = 0
+    while (count < width * height) {
+        imax--
+        jmax--
+        for (j in jmin until jmax) {
+            res[imin, j] = count++
+        }
+        for (i in imin until imax) {
+            res[i, jmax] = count++
+        }
+        for (j in jmax downTo jmin + 1) {
+            res[imax, j] = count++
+        }
+        for (i in imax downTo imin + 1) {
+            res[i, jmin] = count++
+
+        }
+        imin++
+        jmin++
+    }
+    return res
+}
 
 /**
  * Сложная
@@ -75,7 +103,35 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateRectangles(height: Int, width: Int): Matrix<Int> {
+    val res = createMatrix(height, width, width * height)
+    var count = 1
+    var imax = height
+    var jmax = width
+    var jmin = 0
+    var imin = 0
+    while (count < width * height) {
+        imax--
+        jmax--
+        for (j in jmin until jmax) {
+            res[imin, j] = count
+        }
+        for (i in imin until imax) {
+            res[i, jmax] = count
+        }
+        for (j in jmax downTo jmin + 1) {
+            res[imax, j] = count
+        }
+        for (i in imax downTo imin + 1) {
+            res[i, jmin] = count
+
+        }
+        count++
+        imin++
+        jmin++
+    }
+    return res
+}
 
 /**
  * Сложная
