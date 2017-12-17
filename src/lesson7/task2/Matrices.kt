@@ -67,18 +67,23 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
     var jmax = width
     var jmin = 0
     var imin = 0
-    while (count < width * height) {
+    val end = width * height
+    while (count < end) {
         imax--
         jmax--
+        if (count == end) break
         for (j in jmin until jmax) {
             res[imin, j] = count++
         }
+        if (count == end) break
         for (i in imin until imax) {
             res[i, jmax] = count++
         }
+        if (count == end) break
         for (j in jmax downTo jmin + 1) {
             res[imax, j] = count++
         }
+        if (count == end) break
         for (i in imax downTo imin + 1) {
             res[i, jmin] = count++
 
@@ -104,24 +109,29 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
  *  1  1  1  1  1  1
  */
 fun generateRectangles(height: Int, width: Int): Matrix<Int> {
-    val res = createMatrix(height, width, width * height)
+    val res = createMatrix(height, width, height * width)
     var count = 1
     var imax = height
     var jmax = width
     var jmin = 0
     var imin = 0
-    while (count < width * height) {
+    val end = width * height
+    while (count < end) {
         imax--
         jmax--
+        if (count == end) break
         for (j in jmin until jmax) {
             res[imin, j] = count
         }
+        if (count == end) break
         for (i in imin until imax) {
             res[i, jmax] = count
         }
+        if (count == end) break
         for (j in jmax downTo jmin + 1) {
             res[imax, j] = count
         }
+        if (count == end) break
         for (i in imax downTo imin + 1) {
             res[i, jmin] = count
 
