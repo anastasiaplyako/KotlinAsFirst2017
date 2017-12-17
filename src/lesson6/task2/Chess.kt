@@ -39,9 +39,8 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    val word = " abcdefgh"
     if (!notation.matches(Regex("""[a-h][1-8]"""))) throw IllegalArgumentException()
-    return Square(word.indexOf(notation[0].toString()), notation[1].toString().toInt())
+    return Square(word.indexOf(notation[0].toString()), notation[1] - '0')
 }
 
 /**
@@ -71,11 +70,9 @@ fun rookMoveNumber(start: Square, end: Square): Int {
     var n = 0
     if (!start.inside() || !end.inside()) throw IllegalArgumentException()
     if (start == end) return 0
-    if (Math.abs(start.row - end.row) != 0) {
-        n++
-    }
-    if (start.column != end.column) {
-        n++
+    when {
+        Math.abs(start.row - end.row) != 0 -> n++
+        start.column != end.column -> n++
     }
     return n
 }
@@ -126,15 +123,7 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Примеры: bishopMoveNumber(Square(3, 1), Square(6, 3)) = -1; bishopMoveNumber(Square(3, 1), Square(3, 7)) = 2.
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
-fun bishopMoveNumber(start: Square, end: Square): Int {
-    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
-    return when {
-        start == end -> return 0
-        start.column - start.row == end.column - end.row || start.column + start.row == end.column + end.row -> 1
-        start.column + start.row % 2 == end.column + end.row % 2 -> 2
-        else -> -1
-    }
-}
+fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
 
 /**
  * Сложная
@@ -154,25 +143,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun bishopTrajectory(start: Square, end: Square): List<Square> {
-    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
-    val list = mutableListOf(start)
-    val tmp = (Math.abs(end.column - start.column) + Math.abs(end.row - start.row)) / 2
-    return when (bishopMoveNumber(start, end)) {
-        0 -> list
-        1 -> list + end
-        2 -> when {
-            (start.column + tmp in 1 until 8) && (start.row + tmp in 1 until 8) ->
-                list + Square(start.column + tmp, start.row + tmp) + end
-            (start.column + tmp in 1 until 8) && (start.row + tmp !in 1 until 8) ->
-                list + Square(start.column + tmp, start.row - tmp) + end
-            (start.column + tmp !in 1 until 8) && (start.row + tmp in 1 until 8) ->
-                list + Square(start.column - tmp, start.row + tmp) + end
-            else -> list + Square(start.column - tmp, start.row - tmp) + end
-        }
-        else -> listOf()
-    }
-}
+fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
 
 /**
  * Средняя
@@ -202,8 +173,7 @@ fun kingMoveNumber(start: Square, end: Square): Int {
     return when {
         start.column == end.column -> coorY
         start.row == end.row -> coorX
-        else -> if (coorX > coorY) coorX
-        else coorY
+        else -> Math.max(coorX,coorY)
     }
 }
 

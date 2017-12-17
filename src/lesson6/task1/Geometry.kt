@@ -112,7 +112,7 @@ fun diameter(vararg points: Point): Segment {
     if (list.size < 2) throw IllegalArgumentException()
     var result = Segment(list[0], list[1])
     for (point in list) {
-        for (i in 0 until list.size) {
+        for (i in list.indexOf(point) until list.size) {
             if (point.distance(list[i]) > result.begin.distance(result.end))
                 result = Segment(point, list[i])
         }
