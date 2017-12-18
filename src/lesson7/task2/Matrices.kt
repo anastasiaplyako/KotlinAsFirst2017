@@ -122,7 +122,31 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
  * 10 13 16 18
  * 14 17 19 20
  */
-fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSnake(height: Int, width: Int): Matrix<Int> {
+    var row = 0
+    var count = 0
+    var column = 0
+    val res = createMatrix(height, width, 0)
+    for (i in 0 until width){
+        column = i
+        row = 0
+        while (row < height && column >= 0) {
+            res[row, column] = count++
+            row++
+            column--
+        }
+    }
+    for (i in 0 until height) {
+        column = i + 1
+        row = width - 2
+        while (row < height){
+            res[row,column] = count++
+            row++
+            column--
+        }
+    }
+    return res
+}
 
 /**
  * Средняя
