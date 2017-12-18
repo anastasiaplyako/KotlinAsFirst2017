@@ -137,7 +137,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
             column--
         }
     }
-    for (i in 0 until height) {
+    for (i in 1 until height) {
         column = i + 1
         row = width - 2
         res[i,width - 1] = count++
