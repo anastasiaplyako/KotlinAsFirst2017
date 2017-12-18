@@ -66,16 +66,7 @@ fun square(notation: String): Square {
  * Пример: rookMoveNumber(Square(3, 1), Square(6, 3)) = 2
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
-fun rookMoveNumber(start: Square, end: Square): Int {
-    var n = 0
-    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
-    if (start == end) return 0
-    when {
-        Math.abs(start.row - end.row) != 0 -> n++
-        start.column != end.column -> n++
-    }
-    return n
-}
+fun rookMoveNumber(start: Square, end: Square): Int = TODO()
 
 /**
  * Средняя
@@ -91,14 +82,7 @@ fun rookMoveNumber(start: Square, end: Square): Int {
  *          rookTrajectory(Square(3, 5), Square(8, 5)) = listOf(Square(3, 5), Square(8, 5))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun rookTrajectory(start: Square, end: Square): List<Square> {
-    val list = mutableListOf(start)
-    return when (rookMoveNumber(start, end)) {
-        0 -> list
-        1 -> list + end
-        else -> list + Square(start.column, end.row) + end
-    }
-}
+fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
 
 /**
  * Простая
