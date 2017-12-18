@@ -138,8 +138,8 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
         }
     }
     for (i in 1 until height) {
-        column = i + 1
-        row = width - 2
+        column =  width - 2
+        row = i + 1
         res[i,width - 1] = count++
         while (row < height && column >= 0 ){
             res[row,column] = count++
